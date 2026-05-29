@@ -2,6 +2,17 @@
 
 All notable changes to this project are documented here.
 
+## Unreleased
+
+### Added
+
+- Terraform module (`terraform/`) that provisions the AWS platform: VPC (3 AZs,
+  private + public subnets, single NAT gateway), EKS managed node group,
+  ElastiCache Redis replication group (managed backplane), and ArgoCD bootstrap
+  via Helm. GitOps handles app delivery after a single `kubectl apply` handoff.
+- CI job `terraform` that validates `fmt`, `init -backend=false`, and `validate`
+  on every push and pull request.
+
 ## v0.1.0 (2026-05-29)
 
 Initial release.

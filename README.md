@@ -65,6 +65,26 @@ on Redis. Every replica subscribes to `fanloop:*` and forwards the event to its
 own local subscribers. No replica needs to know about connections on other
 replicas, and no load balancer affinity is required.
 
+## Provision on AWS with Terraform
+
+The `terraform/` module stands up the full AWS platform: VPC (3 AZs, private +
+public subnets, single NAT gateway), EKS cluster with a managed node group,
+and an ElastiCache Redis replication group as the managed backplane. It also
+bootstraps ArgoCD via Helm. Once `terraform apply` completes, run one
+`kubectl apply` to hand app delivery over to GitOps:
+
+```bash
+cd terraform
+terraform init        # configure the S3 backend first (see terraform/README.md)
+terraform plan
+terraform apply
+aws eks update-kubeconfig --region us-east-1 --name fanloop
+kubectl apply -f gitops/bootstrap/root-app.yaml   # GitOps takes over here
+```
+
+See [terraform/README.md](terraform/README.md) for prerequisites, cost
+warnings, variables, and teardown instructions.
+
 ## Deploy with ArgoCD
 
 ```bash
