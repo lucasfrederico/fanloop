@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "fanloop.fullname" . }}
+  labels:
+    {{- include "fanloop.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: {{ .Values.service.port }}
+      targetPort: http
+      name: http
+  selector:
+    {{- include "fanloop.selectorLabels" . | nindent 4 }}

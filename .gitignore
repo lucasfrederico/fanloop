@@ -4,3 +4,5 @@ target/
 *.iml
 .DS_Store
 dist/
+charts/fanloop/charts/
+charts/fanloop/Chart.lock
