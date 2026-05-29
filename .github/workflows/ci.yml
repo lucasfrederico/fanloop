@@ -88,3 +88,15 @@ jobs:
           kubectl -n fanloop port-forward svc/fanloop-fanloop 8080:8080 &
           sleep 5
           BASE=http://localhost:8080 WS=ws://localhost:8080/ws API_KEY=dev-key ./scripts/smoke-test.sh
+
+  terraform:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: hashicorp/setup-terraform@v3
+      - name: Terraform fmt check
+        run: terraform -chdir=terraform fmt -check -recursive
+      - name: Terraform init
+        run: terraform -chdir=terraform init -backend=false
+      - name: Terraform validate
+        run: terraform -chdir=terraform validate
