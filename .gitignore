@@ -6,3 +6,13 @@ target/
 dist/
 charts/fanloop/charts/
 charts/fanloop/Chart.lock
+
+# Terraform
+terraform/.terraform/
+terraform/*.tfstate
+terraform/*.tfstate.backup
+terraform/crash.log
+terraform/override.tf
+terraform/override.tf.json
+terraform/*_override.tf
+terraform/*_override.tf.json
