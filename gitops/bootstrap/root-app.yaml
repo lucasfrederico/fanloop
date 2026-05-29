@@ -8,7 +8,7 @@ spec:
   source:
     repoURL: https://github.com/lucasfrederico/fanloop
     targetRevision: master
-    path: gitops/apps
+    path: gitops/overlays/dev
   destination:
     server: https://kubernetes.default.svc
     namespace: argocd

@@ -3,4 +3,4 @@ kind: Kustomization
 resources:
   - fanloop.yaml
   - monitoring.yaml
-  - dashboard-configmap.yaml
+  - dashboard.yaml
