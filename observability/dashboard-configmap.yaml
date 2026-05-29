@@ -1,0 +1,41 @@
+apiVersion: v1
+data:
+  fanloop.json: |
+    {
+      "title": "fanloop",
+      "uid": "fanloop",
+      "schemaVersion": 39,
+      "panels": [
+        {
+          "title": "Active connections",
+          "type": "timeseries",
+          "gridPos": {"h": 8, "w": 12, "x": 0, "y": 0},
+          "targets": [{"expr": "sum(fanloop_connections_active)", "legendFormat": "connections"}]
+        },
+        {
+          "title": "Publishes/sec",
+          "type": "timeseries",
+          "gridPos": {"h": 8, "w": 12, "x": 12, "y": 0},
+          "targets": [{"expr": "sum(rate(fanloop_publishes_total[1m]))", "legendFormat": "publishes/s"}]
+        },
+        {
+          "title": "Fan-out latency p95",
+          "type": "timeseries",
+          "gridPos": {"h": 8, "w": 12, "x": 0, "y": 8},
+          "targets": [{"expr": "fanloop_fanout_latency_seconds{quantile=\"0.95\"}", "legendFormat": "p95"}]
+        },
+        {
+          "title": "Fan-out latency p99",
+          "type": "timeseries",
+          "gridPos": {"h": 8, "w": 12, "x": 12, "y": 8},
+          "targets": [{"expr": "fanloop_fanout_latency_seconds{quantile=\"0.99\"}", "legendFormat": "p99"}]
+        }
+      ]
+    }
+kind: ConfigMap
+metadata:
+  creationTimestamp: null
+  labels:
+    grafana_dashboard: "1"
+  name: fanloop-dashboard
+  namespace: monitoring
