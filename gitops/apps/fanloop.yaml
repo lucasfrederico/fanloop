@@ -1,0 +1,27 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: fanloop
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/lucasfrederico/fanloop
+    targetRevision: master
+    path: charts/fanloop
+    helm:
+      valuesObject:
+        replicaCount: 2
+        image:
+          repository: ghcr.io/lucasfrederico/fanloop
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: fanloop
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
