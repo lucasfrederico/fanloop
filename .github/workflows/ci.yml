@@ -63,11 +63,6 @@ jobs:
           cluster_name: fanloop-ci
       - name: Load image into kind
         run: kind load docker-image ghcr.io/lucasfrederico/fanloop:ci --name fanloop-ci
-      - name: Install ArgoCD
-        run: |
-          kubectl create namespace argocd
-          kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
-          kubectl -n argocd rollout status deploy/argocd-server --timeout=300s
       - name: Install Helm chart directly (CI uses local image tag)
         run: |
           curl -fsSL https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
@@ -84,7 +79,9 @@ jobs:
           kubectl -n fanloop rollout status deploy --timeout=300s
       - name: Smoke test
         run: |
-          sudo apt-get update && sudo apt-get install -y websocat || cargo install websocat
+          curl -fsSL https://github.com/vi/websocat/releases/latest/download/websocat.x86_64-unknown-linux-musl -o /usr/local/bin/websocat
+          chmod +x /usr/local/bin/websocat
+          websocat --version
           kubectl -n fanloop port-forward svc/fanloop-fanloop 8080:8080 &
           sleep 5
           BASE=http://localhost:8080 WS=ws://localhost:8080/ws API_KEY=dev-key ./scripts/smoke-test.sh
